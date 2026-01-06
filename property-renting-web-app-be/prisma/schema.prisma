@@ -1,0 +1,202 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  role ROLE
+  name String 
+  email String @unique
+  password String
+  isVerified Boolean @default(false)
+  profileImage String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenants Tenant[]
+  reviews Review[]
+  orders Order[]
+  emailTokens EmailToken[]
+  passwordResetTokens PasswordResetToken[]
+
+  @@map("users")
+}
+
+enum ROLE {
+  TENANT
+  USER
+}
+
+model Tenant {
+  id Int @id @default(autoincrement())
+  userId Int @unique
+  companyName String
+  phoneNumber String
+
+  user User @relation(fields: [userId], references: [id])
+  properties Property[]
+  @@map("tenants")
+}
+
+model EmailToken {
+  id Int @id @default(autoincrement())
+  userId Int
+  token String @unique
+  expiresAt DateTime
+  used Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id])
+  @@map("email tokens")
+}
+
+model PasswordResetToken {
+  id Int @id @default(autoincrement())
+  userId Int
+  token String @unique
+  expiresAt DateTime
+  used Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id])
+  @@map("password reset tokens")
+}
+
+model PropertyCategory {
+  id Int @id @default(autoincrement())
+  name String
+  cretaedAt DateTime @default(now())
+
+  properties Property[]
+  @@map("property categories")
+}
+
+model Property {
+  id Int @id @default(autoincrement())
+  tenantId Int
+  cetagoryId Int
+  name String
+  description String
+  address String
+  image String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+  category PropertyCategory @relation(fields: [cetagoryId], references: [id])
+  rooms Room[]
+  reviews Review[]
+  @@map("properties")
+}
+
+model Room {
+  id Int @id @default(autoincrement())
+  propertyId Int
+  name String
+  description String
+  basePrice Float
+  capacity Int
+  startDate DateTime
+  endDate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  property Property @relation(fields: [propertyId], references: [id])
+  availabilities RoomAvailability[]
+  peakRates PeakSeasonRate[]
+  orders Order[]
+  @@map("rooms")
+}
+
+model RoomAvailability {
+  id Int @id @default(autoincrement())
+  roomId Int
+  date DateTime
+  isAvailable Boolean @default(true)
+
+  room Room @relation(fields: [roomId], references: [id])
+  @@map("room availabilities")
+}
+
+model PeakSeasonRate {
+  id Int @id @default(autoincrement())
+  roomId Int
+  startDate DateTime
+  endDate DateTime
+  value Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  room Room @relation(fields: [roomId], references: [id])
+  @@map("peak season rates")
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+  userId Int
+  roomId Int
+  checkIn DateTime
+  checkOut DateTime
+  totalPrice Float
+  status ORDER_STATUS
+  paymentProof String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  paymentLogs PaymentLlog[]
+  reviews Review[]
+
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
+  @@map("orders")
+}
+
+enum ORDER_STATUS {
+  Menunggu_Pembayaran
+  Menunggu_Konfirmasi_Pembayaran
+  Dibatalkan
+}
+
+model PaymentLlog {
+  id Int @id @default(autoincrement())
+  orderId Int
+  status PAYMENT_STATUS
+  note String?
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id])
+  @@map("payment logs")
+}
+
+enum PAYMENT_STATUS {
+  Pembayaran_Diterima
+  Pembayaran_Ditolak
+  Pembayaran_Dikembalikan
+}
+
+model Review {
+  id Int @id @default(autoincrement())
+  userId Int
+  propertyId Int
+  orederId Int
+  rating Int
+  comment String?
+  reply String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  property Property @relation(fields: [propertyId], references: [id])
+  order Order @relation(fields: [orederId], references: [id])
+  @@map("reviews")
+}
+
+
+
+        
