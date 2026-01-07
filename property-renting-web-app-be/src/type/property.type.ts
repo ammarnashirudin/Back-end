@@ -7,4 +7,17 @@ export type PropertyQuery = {
     order? : 'asc' | 'desc',
 };
 
+export type CreateRoomInput = {
+    name : string,
+    description : string,
+    basePrice : number,
+    capacity : number,
+};
 
+export type CreatePropertyInput = {
+    name : string,
+    description : string,
+    image : string,
+    categoryId : number,
+    rooms : CreateRoomInput[],
+}

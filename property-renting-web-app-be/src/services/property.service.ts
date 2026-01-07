@@ -1,5 +1,16 @@
-import { findAllPropertiesRepositories, getPropertDetailRepositories } from "../repositories/property.repositories";
-import { PropertyQuery} from "../type/property.type";
+import { 
+    findAllPropertiesRepositories, 
+    getPropertDetailRepositories,
+    createCategoryRepositories,
+    updateCategoryRepositories,
+    deleteCategoryRepositories,
+    findAllCategoriesRepositories,
+    findTenantPropertiesRepositories,
+    createPropertyRepositories,
+    updatePropertyRepositories,
+    deletePropertyRepositories,
+} from "../repositories/property.repositories";
+import { PropertyQuery, CreatePropertyInput } from "../type/property.type";
 
 export async function findAllPropertiesServices(query : PropertyQuery) {
     const result = await findAllPropertiesRepositories(query);
@@ -82,5 +93,57 @@ return {
     rooms,
 };
 
+};
+
+export async function createCategoryServices(name : string) {
+    if(!name || name.trim() === "") {
+        throw new Error("Category name is required");
+    }
+    return await createCategoryRepositories(name);
+}
+
+export async function updateCategoryServices(id : number, name : string) {
+    if(!id) throw new Error("Category id is required");
+    if(!name) throw new Error("Category name is required");
+
+    return await updateCategoryRepositories(id, name);
+};
+
+export async function deleteCategoryServices(id : number) {
+    if(!id) throw new Error("Category id is required");
+    return await deleteCategoryRepositories(id);
+};
+
+export async function findAllCategoriesServices() {
+    return await findAllCategoriesRepositories();
+};
+
+export async function findTenantPropertiesServices(tenantId : number) {
+    return await findTenantPropertiesRepositories(tenantId);
+};
+
+export async function createPropertyServices(
+    tenantId : number,
+    data : CreatePropertyInput,
+){
+    if(!data.name || !data.categoryId || !data.rooms?.length) {
+        throw new Error("Invalid property data");
+    }
+    return await createPropertyRepositories(tenantId, data);
+};
+
+export async function updatePropertyServices(
+    propertyId : number,
+    tenantId : number,
+    data : CreatePropertyInput,
+){
+    return await updatePropertyRepositories(propertyId, tenantId, data);
+}
+
+export async function deletePropertyServices(
+    propertyId : number,
+    tenantId : number,
+){
+    return await deletePropertyRepositories(propertyId, tenantId);
 };
 
