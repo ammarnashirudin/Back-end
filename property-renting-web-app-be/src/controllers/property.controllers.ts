@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { findAllPropertiesServices } from "../services/property.service";
+import { findAllPropertiesServices, getPropertyDetailServices } from "../services/property.service";
 
 export async function findAllPropertiesControllers(req :  Request, res : Response){
     const result = await findAllPropertiesServices({
@@ -12,3 +12,13 @@ export async function findAllPropertiesControllers(req :  Request, res : Respons
     });
     res.json(result);
 }
+
+export async function getPropertyDetailControllers(req : Request, res : Response){
+    const propertyId = Number(req.params.propertyId);
+    const startDate = req.query.startDate as string;
+    const data = await getPropertyDetailServices(propertyId, startDate);
+    if (!data) {
+        return res.status(404).json({message : "Property not found"});
+    }
+    res.json(data);
+} 

@@ -6,3 +6,5 @@ export type PropertyQuery = {
     sortby? : 'name' | 'price',
     order? : 'asc' | 'desc',
 };
+
+

@@ -61,6 +61,21 @@ export async function findAllPropertiesRepositories (query : PropertyQuery) {
     return {data, totalItems, page, limit};
 }
 
+export async function getPropertDetailRepositories(properyId : Number) {
+    return await prisma.property.findUnique({
+        where : {id : properyId},
+        include : {
+            category : true,
+            rooms : {
+                include : {
+                    availabilities : true,
+                    peakRates : true,
+                },
+            },
+        },
+    });
+};
+
 
 
 
