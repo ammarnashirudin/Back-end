@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { PropertyQuery} from "@/types/property.type";
+import { PropertyQuery } from "../type/property.type";
 
 export async function findAllPropertiesRepositories (query : PropertyQuery) {
     const {
