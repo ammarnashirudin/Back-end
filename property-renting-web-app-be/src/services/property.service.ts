@@ -1,4 +1,4 @@
-import { findAllPropertiesRepositories} from "@/repositories/property.repository";
+import { findAllPropertiesRepositories } from "@/repositories/property.repositories";
 import { PropertyQuery} from "@/types/property.type";
 
 export async function findAllPropertiesServices(query : PropertyQuery) {
