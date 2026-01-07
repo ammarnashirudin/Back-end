@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { findAllPropertiesServices } from "@/services/property.service";
+import { findAllPropertiesServices } from "../services/property.service";
 
 export async function findAllPropertiesControllers(req :  Request, res : Response){
     const result = await findAllPropertiesServices({

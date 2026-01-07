@@ -1,5 +1,5 @@
-import { findAllPropertiesRepositories} from "@/repositories/property.repository";
-import { PropertyQuery} from "@/types/property.type";
+import { findAllPropertiesRepositories } from "../repositories/property.repositories";
+import { PropertyQuery } from "../type/property.type";
 
 export async function findAllPropertiesServices(query : PropertyQuery) {
     const result = await findAllPropertiesRepositories(query);
