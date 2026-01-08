@@ -114,15 +114,18 @@ export async function findTenantPropertiesRepositories(tenantId : number) {
 
 export async function createPropertyRepositories(
     tenantId : number, 
-    data : CreatePropertyInput
+    data : CreatePropertyInput,
+    file_img : Express.Multer.File
 ) {
-    return await prisma.property.create({
+    const {secure_url} = await cloudinaryUploud(file_img);
+    try {
+        const property = await prisma.property.create({
         data : {
             tenantId,
             categoryId : data.categoryId,
             name : data.name,
             description : data.description,
-            image : data.image,
+            image : secure_url,
             rooms : {
                 create : data.rooms,
             },
@@ -132,6 +135,11 @@ export async function createPropertyRepositories(
             category : true,
         },
     });
+    return property;
+    } catch (err) {
+        cloudinaryRemove(secure_url);
+        throw err
+    }
 };
 
 export async function updatePropertyRepositories(

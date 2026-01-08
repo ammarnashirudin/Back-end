@@ -125,11 +125,12 @@ export async function findTenantPropertiesServices(tenantId : number) {
 export async function createPropertyServices(
     tenantId : number,
     data : CreatePropertyInput,
+    file_img : Express.Multer.File
 ){
     if(!data.name || !data.categoryId || !data.rooms?.length) {
         throw new Error("Invalid property data");
     }
-    return await createPropertyRepositories(tenantId, data);
+    return await createPropertyRepositories(tenantId, data, file_img);
 };
 
 export async function updatePropertyServices(
