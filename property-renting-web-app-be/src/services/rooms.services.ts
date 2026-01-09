@@ -72,7 +72,7 @@ export async function deleteRoomServices(
             where : {
                 id : roomId,
                 property : {tenantId},
-            };
+            }
         });
         if(!room) throw createCustomError(401, "Unauthorized");
         return deleteRoomRepositories(roomId);
