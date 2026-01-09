@@ -1,5 +1,8 @@
 import prisma from "@/lib/prisma";
 import { PropertyQuery, CreatePropertyInput } from "../type/property.type";
+import { cloudinaryUpload, cloudinaryRemove } from "@/utils/cloudinary";
+import { createCustomError, CustomError } from "@/utils/customError";
+import { id } from "zod/v4/locales";
 
 export async function findAllPropertiesRepositories (query : PropertyQuery) {
     const {
@@ -117,7 +120,7 @@ export async function createPropertyRepositories(
     data : CreatePropertyInput,
     file_img : Express.Multer.File
 ) {
-    const {secure_url} = await cloudinaryUploud(file_img);
+    const {secure_url} = await cloudinaryUpload (file_img);
     try {
         const property = await prisma.property.create({
         data : {
@@ -146,23 +149,31 @@ export async function updatePropertyRepositories(
     propertyId : number,
     tenantId : number,
     data : CreatePropertyInput,
+    file_img : Express.Multer.File,
 ){
-    return await prisma.property.update({
-        where : {
-            id : propertyId,
-            tenantId,
-        },
-        data : {
-            name : data.name,
-            description : data.description,
-            image : data.image,
-            categoryId : data.categoryId,
-        },
-        include : {
-            rooms : true,
-            category : true,
-        },
-    });
+    const {secure_url} = await cloudinaryUpload(file_img);
+    try {
+        const property = await prisma.property.update({
+            where : {
+                id : propertyId,
+                tenantId,
+            },
+            data : {
+                name : data.name,
+                desciption : data.description,
+                Image : secure_url,
+                categoryId : data.categoryId,
+            },
+            include : {
+                rooms : true,
+                category : true,
+            },
+        });
+        return property;
+    } catch (err) {
+        cloudinaryRemove(secure_url)
+        throw createCustomError(404, "Update Property Repository fail")
+    };
 };
 
 export async function deletePropertyRepositories(
