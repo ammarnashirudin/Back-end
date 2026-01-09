@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import { CreateRoomInput, updateRoomInput } from "@/type/property.type";
-import { number } from "zod";
+
 export async function findRoomsByPropertyRepos(propertyId : number){
     try {
         const rooms = await prisma.room.findMany({
