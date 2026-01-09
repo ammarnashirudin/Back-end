@@ -7,8 +7,6 @@ import {
 import prisma from "@/lib/prisma";
 import { createCustomError } from "@/utils/customError";
 import { CreateRoomInput, updateRoomInput } from "@/type/property.type";
-import { exactOptional, property } from "zod";
-import { threadCpuUsage } from "node:process";
 
 export async function findRoomsByPropertyService(
     propertyId : number,

@@ -29,3 +29,5 @@ export type updateRoomInput = {
     basePrice? : number;
     capacity? : number;
 }
+
+

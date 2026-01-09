@@ -12,7 +12,7 @@ import {
     deletePropertyServices,
  } from "../services/property.service";
  import { createCustomError } from "@/utils/customError";
-import { file } from "zod";
+
 
 export async function findAllPropertiesControllers(req :  Request, res : Response, next : NextFunction) {
     try {
@@ -26,10 +26,9 @@ export async function findAllPropertiesControllers(req :  Request, res : Respons
     });
     res.json(result);
     } catch (err) {
-        next(err)
-    }
-    
-}
+        next(err);
+    };
+};
 
 export async function getPropertyDetailControllers(req : Request, res : Response, next : NextFunction) {
     try {
@@ -39,9 +38,9 @@ export async function getPropertyDetailControllers(req : Request, res : Response
         if (!data) throw createCustomError (401, "invalid data")
         res.json(data);
     } catch (err) {
-        throw err;
-    }
-} 
+        next(err);
+    };
+};
 
 export async function createCategoryControllers (req : Request, res : Response, next : NextFunction) {
     try {
@@ -49,7 +48,7 @@ export async function createCategoryControllers (req : Request, res : Response, 
         const data = await createCategoryServices(name);
         res.status(201).json(data);  
     } catch (err) {
-        throw err;
+        next(err);
     };
 };
 
@@ -61,7 +60,7 @@ export async function updateCategoryControllers (req : Request, res : Response, 
         res.json(data);
         
     } catch (err) {
-        throw err;
+        next(err);
     }
 };
 
@@ -71,7 +70,7 @@ export async function deleteCategoryControllers (req : Request, res : Response, 
         await deleteCategoryServices(id);
         res.status(204).json({message : "Category deleted"});
     } catch (err) {
-        throw err;        
+        next(err);        
     };
 };
 
@@ -80,7 +79,7 @@ export async function findAllCategoriesControllers (req : Request, res : Respons
         const data = await findAllCategoriesServices();
         res.json(data);
     } catch (err) {
-        throw err;
+        next(err);
     };
 };
 
@@ -90,7 +89,7 @@ export async function findTenantPropertiesControllers (req : Request, res : Resp
         const data = await findTenantPropertiesServices(tenantId);
         res.json(data);
     } catch (err) {
-        throw err;
+        next(err);
     };
 };
 
