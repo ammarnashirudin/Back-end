@@ -5,7 +5,6 @@ import {
     updateRoomService, 
     deleteRoomServices 
 } from "@/services/rooms.services";
-import { createCustomError } from "@/utils/customError";
 
 
 export async function findRoomByPropertyController(
@@ -15,7 +14,7 @@ export async function findRoomByPropertyController(
 ){
     try {
         const propertyId = Number(req.params.properyId);
-        const tenantId = req.user.tenantId;
+        const tenantId = Number(req.params.tenantId);
 
         const rooms = await findRoomsByPropertyService(propertyId,tenantId);
         res.json(rooms);
@@ -24,13 +23,14 @@ export async function findRoomByPropertyController(
     };
 };
 
+
 export async function createRoomController(
     req : Request,
     res : Response,
     next : NextFunction,
 ){
     try {
-    const tenantId = req.user.tenantId;
+    const tenantId = Number(req.params.tenantId);
 
     const room = await createRoomService(tenantId, req.body);
     res.status(201).json(room);
@@ -46,7 +46,7 @@ export async function updateRoomController(
 ){
     try {
         const roomId = Number(req.params.id);
-        const tenantId = req.user.tenantId;
+        const tenantId = Number(req.params.tenantId);
 
         const room = await updateRoomService(roomId, tenantId, req.body);
         res.json(room);
@@ -62,7 +62,7 @@ export async function deleteRoomController(
 ){
     try {
         const roomId = Number(req.params.id);
-        const tenantId = req.user.tenantId;
+        const tenantId = Number(req.params.tenantId);
         await deleteRoomServices(roomId, tenantId);
     } catch (err) {
         next(err);
