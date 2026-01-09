@@ -7,12 +7,8 @@ const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || "";
 
 export {
     PORT,
-<<<<<<< HEAD
     CLOUDINARY_API_KEY,
     CLOUDINARY_API_SECRET,
     CLOUDINARY_CLOUD_NAME,
     
 }
-=======
-}
->>>>>>> main
