@@ -11,6 +11,7 @@ import {
     deletePropertyRepositories,
 } from "../repositories/property.repositories";
 import { PropertyQuery, CreatePropertyInput } from "../type/property.type";
+import { createCustomError } from "@/utils/customError";
 
 export async function findAllPropertiesServices(query : PropertyQuery) {
     const result = await findAllPropertiesRepositories(query);
@@ -41,7 +42,7 @@ export async function findAllPropertiesServices(query : PropertyQuery) {
 
 export async function getPropertyDetailServices(propertyId : number, startDate? : string, endDate? : string) {
     const property = await getPropertDetailRepositories(propertyId);
-    if (!property) return null;
+    if (!property) return createCustomError (401, "Invalid property");
 
     const start = startDate ? new Date(startDate) : new Date();
     const end = new Date(start);
@@ -97,20 +98,20 @@ return {
 
 export async function createCategoryServices(name : string) {
     if(!name || name.trim() === "") {
-        throw new Error("Category name is required");
+        throw createCustomError (401, "Category name is required");
     }
     return await createCategoryRepositories(name);
 }
 
 export async function updateCategoryServices(id : number, name : string) {
-    if(!id) throw new Error("Category id is required");
-    if(!name) throw new Error("Category name is required");
+    if(!id) throw createCustomError (401, "Category id is required");
+    if(!name) throw createCustomError (401, "Category name is required");
 
     return await updateCategoryRepositories(id, name);
 };
 
 export async function deleteCategoryServices(id : number) {
-    if(!id) throw new Error("Category id is required");
+    if(!id) throw createCustomError(401, "Category id is required");
     return await deleteCategoryRepositories(id);
 };
 
@@ -125,20 +126,22 @@ export async function findTenantPropertiesServices(tenantId : number) {
 export async function createPropertyServices(
     tenantId : number,
     data : CreatePropertyInput,
+    file_img : Express.Multer.File
 ){
     if(!data.name || !data.categoryId || !data.rooms?.length) {
-        throw new Error("Invalid property data");
+        throw createCustomError (401,"Invalid property data");
     }
-    return await createPropertyRepositories(tenantId, data);
+    return await createPropertyRepositories(tenantId, data, file_img);
 };
 
 export async function updatePropertyServices(
     propertyId : number,
     tenantId : number,
     data : CreatePropertyInput,
+    file_img : Express.Multer.File
 ){
-    return await updatePropertyRepositories(propertyId, tenantId, data);
-}
+    return await updatePropertyRepositories(propertyId, tenantId, data, file_img);
+};
 
 export async function deletePropertyServices(
     propertyId : number,

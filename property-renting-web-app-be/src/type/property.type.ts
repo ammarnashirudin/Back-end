@@ -8,10 +8,11 @@ export type PropertyQuery = {
 };
 
 export type CreateRoomInput = {
+    propertyId : string;
     name : string,
     description : string,
     basePrice : number,
-    capacity : number,
+    capacity? : number,
 };
 
 export type CreatePropertyInput = {
@@ -20,4 +21,13 @@ export type CreatePropertyInput = {
     image : string,
     categoryId : number,
     rooms : CreateRoomInput[],
+};
+
+export type updateRoomInput = {
+    name? : string;
+    description? : string;
+    basePrice? : number;
+    capacity? : number;
 }
+
+

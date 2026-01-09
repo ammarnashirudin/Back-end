@@ -11,6 +11,8 @@ import {
     updatePropertyServices,
     deletePropertyServices,
  } from "../services/property.service";
+ import { createCustomError } from "@/utils/customError";
+
 
 export async function findAllPropertiesControllers(req :  Request, res : Response, next : NextFunction) {
     try {
@@ -24,24 +26,21 @@ export async function findAllPropertiesControllers(req :  Request, res : Respons
     });
     res.json(result);
     } catch (err) {
-        next(err)
-    }
-    
-}
+        next(err);
+    };
+};
 
 export async function getPropertyDetailControllers(req : Request, res : Response, next : NextFunction) {
     try {
         const propertyId = Number(req.params.propertyId);
         const startDate = req.query.startDate as string;
         const data = await getPropertyDetailServices(propertyId, startDate);
-        if (!data) {
-        return res.status(404).json({message : "Property not found"});
-    }
-    res.json(data);
+        if (!data) throw createCustomError (401, "invalid data")
+        res.json(data);
     } catch (err) {
         next(err);
-    }
-} 
+    };
+};
 
 export async function createCategoryControllers (req : Request, res : Response, next : NextFunction) {
     try {
@@ -63,10 +62,6 @@ export async function updateCategoryControllers (req : Request, res : Response, 
     } catch (err) {
         next(err);
     }
-    const id = Number(req.params.categoryId);
-    const {name} = req.body;
-    const data = await updateCategoryServices(id, name);
-    res.json(data);
 };
 
 export async function deleteCategoryControllers (req : Request, res : Response, next : NextFunction) {
@@ -101,10 +96,13 @@ export async function findTenantPropertiesControllers (req : Request, res : Resp
 export async function createPropertyControllers (req : Request, res : Response, next : NextFunction) {
     try {
         const tenantId = Number(req.params.tenantId);
+        if(!req.file) throw createCustomError(401, "Image is requires!!")
 
         const property = await createPropertyServices(
             tenantId,
             req.body,
+            req.file
+        
         );
     res.status(201).json(property);
     } catch (err) {
@@ -116,10 +114,13 @@ export async function updatePropertyControllers (req : Request, res : Response, 
     try {
         const tenantId = Number(req.params.tenantId);
         const propertyId = Number(req.params.propertyId);
+        if(!req.file) throw createCustomError(401, "Image is required!!")
+
         const property =  await updatePropertyServices(
             propertyId,
             tenantId,
             req.body,
+            req.file
         );
     res.json(property); 
     } catch (err) {
