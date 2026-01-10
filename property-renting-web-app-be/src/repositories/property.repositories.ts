@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { PropertyQuery, CreatePropertyInput } from "../type/property.type";
 import { cloudinaryUpload, cloudinaryRemove } from "@/utils/cloudinary";
 import { createCustomError, CustomError } from "@/utils/customError";
-import { id } from "zod/v4/locales";
+
 
 export async function findAllPropertiesRepositories (query : PropertyQuery) {
     const {
