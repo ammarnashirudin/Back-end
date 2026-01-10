@@ -3,10 +3,18 @@ import {
     createRoomsRepositories,
     updateRoomRepositories,
     deleteRoomRepositories,
+    findAvailabilityRepositories,
+    deleteAvailibiltyRepositories,
+    updateAvailabiltyRepositories,
+    createAvailabilityRepositories,
+
  } from "@/repositories/rooms.repositories";
 import prisma from "@/lib/prisma";
 import { createCustomError } from "@/utils/customError";
 import { CreateRoomInput, updateRoomInput } from "@/type/property.type";
+import { CreateAvailabiltyInput, updateAvailabilityInput, findAvailabilityInput } from "@/type/rooms.type";
+import { property } from "zod";
+import { timeEnd } from "node:console";
 
 export async function findRoomsByPropertyService(
     propertyId : number,
@@ -78,3 +86,77 @@ export async function deleteRoomServices(
         throw err;
     };
 };
+
+export async function findAvailabilityService(data: findAvailabilityInput){
+    try {
+        const room = await prisma.room.findFirst({
+            where: {id : data.roomId, property : data.tenantId},
+        });
+        if(!room) throw createCustomError(401, "Unauthorized")
+            return findAvailabilityRepositories(room);
+    } catch (err) {
+        throw err
+    };
+};
+
+export async function createRoomAvailibiltyInputService(
+    tenantId : number,
+    data : CreateAvailabiltyInput,
+){
+    try {
+        const room = await prisma.room.findFirst({
+            where : {id:data.roomId, property: {tenantId}},
+        });
+        if(!room) throw createCustomError(401, "Unauthorized");
+
+        return createAvailabilityRepositories({
+            roomId : data.roomId,
+            date : new Date(data.date),
+            isAvailable : data.isAvailable, 
+        });
+    } catch (err) {
+        throw err;
+    };
+};
+
+export async function updateRoomAvailabilityService(data: updateAvailabilityInput){
+    try {
+        const availability = await prisma.roomAvailibility.findFirst({
+            where : {
+                id : data.availabilityId,
+                room : {
+                    property : {
+                        tenantId : data.tenantId
+                    },
+                },
+            },
+        })
+
+        if(!availability) throw createCustomError(401, "Unauthorized")
+        
+        return updateAvailabiltyRepositories(data.availabilityId, data.isAvailable)
+    } catch (err) {
+        throw err
+    };
+};
+
+export async function deleteRoomAvailabilityService(
+    availabilityId : number,
+    tenantId : number,
+){
+    try {
+        const availability = await prisma.roomAvailibility.findFirst({
+            where : {
+                id : availabilityId,
+                room : {property : {tenantId}},
+            },
+        });
+        if(!availability) throw createCustomError(401, "Unauthorized")
+        return deleteRoomRepositories(availabilityId);
+    } catch (err) {
+        throw err;        
+    };
+};
+
+
+
