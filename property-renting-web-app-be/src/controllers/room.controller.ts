@@ -4,10 +4,6 @@ import {
     createRoomService, 
     updateRoomService, 
     deleteRoomServices,
-    findAvailabilityService,
-    createRoomAvailibiltyInputService,
-    updateRoomAvailabilityService,
-     deleteRoomAvailabilityService
 } from "@/services/rooms.services";
 
 
@@ -73,6 +69,3 @@ export async function deleteRoomController(
     };
 };
 
-export async function findAvailabilityInputController(params:type) {
-    
-}
