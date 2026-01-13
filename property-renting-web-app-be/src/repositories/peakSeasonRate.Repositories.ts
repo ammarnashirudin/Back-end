@@ -1,17 +1,10 @@
 import prisma from "@/lib/prisma";
 import { CreatPeakInput } from "@/type/peakSeasonRate";
 
-export async function createPeakRateSeasonRepositories(data:CreatPeakInput) {
-    try {
-        return await prisma.peakSeasonRate.create({data});
-    } catch (err) {
-        throw err;
-    };
-};
 
 export async function updatePeakSeasonRepositories(id : number, data : Partial<CreatPeakInput>) {
     try {
-        return await prisma.peakSeasonrate.update({
+        return await prisma.peakSeasonRate.update({
             where : {id},
             data,
         })
@@ -22,7 +15,7 @@ export async function updatePeakSeasonRepositories(id : number, data : Partial<C
 
 export async function deletePeakSeasonRepositories(id:number) {
     try {
-    return await prisma.peakSeasonRate({where:{id}});        
+    return await prisma.peakSeasonRate.delete({where:{id}});        
     } catch (err) {
         throw err;
     };
@@ -48,10 +41,10 @@ export async function upsertPeakSeasonRepositories(
     try {
         return await prisma.peakSeasonRate.upsert({
             where : {
-                roomId_date : {roomId, date},
+                roomId_startDate : {roomId, startDate: date},
             },
-            update : {type, value},
-            create : {roomId, date, type, value},
+            update : {value},
+            create : {roomId, startDate: date, endDate: date, type, value},
         });
     } catch (err) {
         throw err
@@ -62,20 +55,20 @@ export async function getPeakSeasonByRoomRepoistories(roomId : number) {
     try {
         return prisma.peakSeasonRate.findMany({
             where : {roomId},
-            orderBy : {date : "asc"},
+            orderBy : {startDate : "asc"},
         });
     } catch (err) {
         throw err;
     };
 };
 
-export async function deletePeakSeasonByDateRepositories(roomId : number, date : Date) {
+export async function deletePeakSeasonByDateRepositories(roomId : number, startDate : Date) {
     try {
         return prisma.peakSeasonRate.delete({
             where : {
-                roomId_date : {
+                roomId_startDate: {
                     roomId,
-                    date,
+                    startDate,
                 },
             },
         });

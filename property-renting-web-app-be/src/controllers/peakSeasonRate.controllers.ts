@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { 
     findPeakRatesService, 
     updatePeakRateSeasonService,
-    createPeakRateSeasonService,
     deletePeakRateSeasonService,
     getPeakSeasonByRoomService,
     createPeakSeasonService,
@@ -24,15 +23,6 @@ export async function findPeakSeasonRateController(req :Request, res:Response, n
     };
 };
 
-export async function createPeakSeasonRateController(req: Request, res: Response, next : NextFunction) {
-    try {
-        const tenantId = Number(req.params.tenantId);
-        const rate = await createPeakRateSeasonService(tenantId, req.body);
-        res.status(201).json(rate);
-    } catch (err) {
-        next (err);
-    };
-};
 
 export async function updatePeakSeasonRateController(req: Request, res: Response, next : NextFunction) {
     try {

@@ -35,7 +35,7 @@ export async function createRoomService(
         });
         if(!property) throw createCustomError(401, "Unauthorized");
 
-        if(!data.name || !data.basePrice) throw createCustomError(401, "Invalid Room data");
+        if(!data.name || !data.basePrice || !data.capacity || !data.startDate || !data.endDate) throw createCustomError(401, "Invalid Room data");
 
         return createRoomsRepositories(data);
     } catch (err) {
@@ -67,7 +67,7 @@ export async function deleteRoomServices(
     tenantId : number,
 ){
     try {
-        const room = await prisma.findFirst({
+        const room = await prisma.room.findFirst({
             where : {
                 id : roomId,
                 property : {tenantId},

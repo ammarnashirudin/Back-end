@@ -1,12 +1,11 @@
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -128,11 +127,13 @@ model PeakSeasonRate {
   roomId Int
   startDate DateTime
   endDate DateTime
+  type String
   value Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   room Room @relation(fields: [roomId], references: [id])
+  @@unique([roomId, startDate])
   @@map("peak season rates")
 }
 

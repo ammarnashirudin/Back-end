@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
 import { 
-    createPeakRateSeasonRepositories,
     updatePeakSeasonRepositories,
     deletePeakSeasonRepositories,
     findPeakSeasonByRoomRepositories,
@@ -10,7 +9,7 @@ import {
  } from "@/repositories/peakSeasonRate.Repositories";
 import { CreatePeakSeasonInput, CreatPeakInput } from "@/type/peakSeasonRate";
 import { createCustomError } from "@/utils/customError";
-
+import getDatesBetween from "@/middlewares/get.date.between";
 
 
 export async function findPeakRatesService(roomId : number, tenantId: number) {
@@ -25,25 +24,6 @@ export async function findPeakRatesService(roomId : number, tenantId: number) {
     };
 };
 
-export async function createPeakRateSeasonService(
-    tenantId : number,
-    data : CreatPeakInput,
-) {
-    try {
-        const room = await prisma.room.findFirst({
-            where : {id:data.roomId, property:{tenantId}},
-        });
-        if(!room) throw createCustomError(401, "Unauthorized")
-        return createPeakRateSeasonRepositories({
-            roomId : data.roomId,
-            startDate : data.startDate,
-            endDate : data.endDate,
-            value : data.value,
-        });
-    } catch (err) {
-        throw err;
-    };
-};
 
 export async function updatePeakRateSeasonService(
     id: number,
@@ -84,16 +64,6 @@ export async function deletePeakRateSeasonService(
     };
 };
 
-function getDatesBetween (start : Date, end : Date){
-    const dates : Date[] = [];
-    const current = new Date(start);
-
-    while (current <= new Date){
-        dates.push(new Date(current));
-        current.setDate(current.getDate()+1);
-    }
-    return dates;
-};
 
 export async function createPeakSeasonService(
     tenantId : number,

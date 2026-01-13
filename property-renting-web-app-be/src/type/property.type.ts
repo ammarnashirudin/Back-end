@@ -8,17 +8,19 @@ export type PropertyQuery = {
 };
 
 export type CreateRoomInput = {
-    propertyId : string;
+    propertyId : number;
     name : string,
     description : string,
     basePrice : number,
-    capacity? : number,
+    capacity : number,
+    startDate : Date,
+    endDate : Date,
 };
 
 export type CreatePropertyInput = {
     name : string,
     description : string,
-    image : string,
+    address : string,
     categoryId : number,
     rooms : CreateRoomInput[],
 };

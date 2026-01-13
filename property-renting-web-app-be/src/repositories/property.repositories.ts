@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { PropertyQuery, CreatePropertyInput } from "../type/property.type";
 import { cloudinaryUpload, cloudinaryRemove } from "@/utils/cloudinary";
-import { createCustomError, CustomError } from "@/utils/customError";
+import { createCustomError } from "@/utils/customError";
 
 
 export async function findAllPropertiesRepositories (query : PropertyQuery) {
@@ -32,7 +32,7 @@ export async function findAllPropertiesRepositories (query : PropertyQuery) {
         };
     }
     if (categoryid) {
-        where.categoryId = Number(categoryid);
+        where.cetagoryId = Number(categoryid);
     }
 
     const data = await prisma.property.findMany({
@@ -53,18 +53,13 @@ export async function findAllPropertiesRepositories (query : PropertyQuery) {
                 select : {basePrice : true},
             },
         },
-        orderBy : 
-            sortby === "price" 
-            ? { 
-                rooms: { min: { basePrice: order } },
-                } 
-                : { name: order },
+        orderBy: { name: order },
     });
     const totalItems = await prisma.property.count({where});
     return {data, totalItems, page, limit};
 }
 
-export async function getPropertDetailRepositories(properyId : Number) {
+export async function getPropertDetailRepositories(properyId : number) {
     return await prisma.property.findUnique({
         where : {id : properyId},
         include : {
@@ -80,26 +75,26 @@ export async function getPropertDetailRepositories(properyId : Number) {
 };
 
 export async function createCategoryRepositories(name : string) {
-    return await prisma.category.create({
+    return await prisma.propertyCategory.create({
         data : {name},
     });
 };
 
 export async function updateCategoryRepositories(id : number, name : string) {
-    return await prisma.category.update({
+    return await prisma.propertyCategory.update({
         where : {id},
         data : {name},
     });
 };
 
 export async function deleteCategoryRepositories(id : number) {
-    return await prisma.category.delete({
+    return await prisma.propertyCategory.delete({
         where : {id},
     });
 };
 
 export async function findAllCategoriesRepositories() {
-    return await prisma.category.findMany({
+    return await prisma.propertyCategory.findMany({
         orderBy : {name : 'asc'},
     });
 };
@@ -125,9 +120,10 @@ export async function createPropertyRepositories(
         const property = await prisma.property.create({
         data : {
             tenantId,
-            categoryId : data.categoryId,
+            cetagoryId : data.categoryId,
             name : data.name,
             description : data.description,
+            address : data.address,
             image : secure_url,
             rooms : {
                 create : data.rooms,
@@ -160,9 +156,9 @@ export async function updatePropertyRepositories(
             },
             data : {
                 name : data.name,
-                desciption : data.description,
-                Image : secure_url,
-                categoryId : data.categoryId,
+                description : data.description,
+                image : secure_url,
+                cetagoryId : data.categoryId,
             },
             include : {
                 rooms : true,
@@ -180,12 +176,17 @@ export async function deletePropertyRepositories(
     propertyId : number,
     tenantId : number,
 ){
+    try {
     return await prisma.property.delete({
         where : {
             id : propertyId,
             tenantId,
         },
     });
+    } catch (err) {
+        throw err
+    }
+
 };
 
 

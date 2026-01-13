@@ -2,7 +2,6 @@
 import { Router } from "express";
 import { 
     findPeakSeasonRateController,
-    createPeakSeasonRateController,
     updatePeakSeasonRateController,
     deletePeakSeasonRateController,
     createPeakSeasonController,
@@ -13,7 +12,6 @@ import {
 const peakSeasonRateRouter = Router();
 
 peakSeasonRateRouter.get("/room/:roomId", findPeakSeasonRateController);
-peakSeasonRateRouter.post("/", createPeakSeasonRateController);
 peakSeasonRateRouter.put("/:id",updatePeakSeasonRateController);
 peakSeasonRateRouter.delete("/:id", deletePeakSeasonRateController);
 peakSeasonRateRouter.post("/", createPeakSeasonController);
