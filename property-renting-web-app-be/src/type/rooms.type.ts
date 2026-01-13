@@ -5,13 +5,12 @@ export type CreateAvailabiltyInput = {
 };
 
 export type updateAvailabilityInput = {
-    id : number;
+    availabilityId : number;
     isAvailable : boolean;
     tenantId : number;
-    availabilityId : number;
 };
 
 export type findAvailabilityInput = {
-    roomId : number;
-    tenantId : number;
+    roomId : Number;
+    tenantId : Number;
 }
