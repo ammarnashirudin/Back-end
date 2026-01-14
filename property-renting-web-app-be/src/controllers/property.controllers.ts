@@ -101,8 +101,7 @@ export async function createPropertyControllers (req : Request, res : Response, 
         const property = await createPropertyServices(
             tenantId,
             req.body,
-            req.file
-        
+            req.file,
         );
     res.status(201).json(property);
     } catch (err) {

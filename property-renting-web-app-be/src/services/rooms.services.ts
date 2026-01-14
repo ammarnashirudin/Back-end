@@ -1,5 +1,5 @@
 import { 
-    findRoomsByPropertyRepos,
+    findRoomsByPropertyRepositories,
     createRoomsRepositories,
     updateRoomRepositories,
     deleteRoomRepositories,
@@ -19,7 +19,7 @@ export async function findRoomsByPropertyService(
         });
         if(!property) throw createCustomError(401, "Unauthorized");
 
-        return findRoomsByPropertyRepos(propertyId);
+        return findRoomsByPropertyRepositories(propertyId);
     } catch (err) {
         throw err;
     };

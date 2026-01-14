@@ -40,9 +40,9 @@ export async function findAllPropertiesServices(query : PropertyQuery) {
     };
 };
 
-export async function getPropertyDetailServices(propertyId : number, startDate? : string, endDate? : string) {
+export async function getPropertyDetailServices(propertyId : number, startDate? : string) {
     const property = await getPropertDetailRepositories(propertyId);
-    if (!property) return createCustomError (401, "Invalid property");
+    if (!property) throw createCustomError (401, "Invalid property");
 
     const start = startDate ? new Date(startDate) : new Date();
     const end = new Date(start);

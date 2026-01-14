@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { CreateRoomInput, updateRoomInput } from "@/type/property.type";
-export async function findRoomsByPropertyRepos(propertyId : number){
+
+export async function findRoomsByPropertyRepositories(propertyId : number){
     try {
         const rooms = await prisma.room.findMany({
             where : {propertyId},
