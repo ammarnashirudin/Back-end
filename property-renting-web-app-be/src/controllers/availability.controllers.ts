@@ -4,7 +4,7 @@ import {
     createRoomAvailibiltyInputService,
     updateRoomAvailabilityService,
     deleteRoomAvailabilityService,
- } from "@/services/availability.services";
+ } from "../services/availability.services";
 
  export async function findAvailabiltyController(req:Request, res:Response, next : NextFunction){
     try {

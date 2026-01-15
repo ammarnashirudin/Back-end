@@ -1,14 +1,14 @@
-import prisma from "@/lib/prisma";
+import prisma from "../lib/prisma";
 import { 
     updatePeakSeasonRepositories,
     deletePeakSeasonRepositories,
     upsertPeakSeasonRepositories,
     getPeakSeasonByRoomRepoistories,
     deletePeakSeasonByDateRepositories,
- } from "@/repositories/peakSeasonRate.Repositories";
-import { CreatePeakSeasonInput, CreatPeakInput } from "@/type/peakSeasonRate";
-import { createCustomError } from "@/utils/customError";
-import getDatesBetween from "@/utils/get.date.between";
+ } from "../repositories/peakSeasonRate.Repositories";
+import { CreatePeakSeasonInput, CreatPeakInput } from "../type/peakSeasonRate";
+import { createCustomError } from "../utils/customError";
+import getDatesBetween from "../utils/get.date.between";
 
 
 

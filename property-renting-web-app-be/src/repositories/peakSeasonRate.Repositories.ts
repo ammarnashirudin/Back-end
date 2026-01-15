@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { CreatPeakInput } from "@/type/peakSeasonRate";
+import prisma from "../lib/prisma";
+import { CreatPeakInput } from "../type/peakSeasonRate";
 
 
 export async function updatePeakSeasonRepositories(id : number, data : Partial<CreatPeakInput>) {

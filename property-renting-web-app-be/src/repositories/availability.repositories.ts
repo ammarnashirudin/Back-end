@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { CreateAvailabiltyInput } from "@/type/rooms.type";
+import prisma from "../lib/prisma";
+import { CreateAvailabiltyInput } from "../type/rooms.type";
 
 export async function createAvailabilityRepositories(data:CreateAvailabiltyInput){
     try {

@@ -6,7 +6,7 @@ import {
     createPeakSeasonController,
     deletePeakSeasonByDateController,
     getPeakSeasonController
-} from "@/controllers/peakSeasonRate.controllers";
+} from "../controllers/peakSeasonRate.controllers";
 
 const peakSeasonRateRouter = Router();
 

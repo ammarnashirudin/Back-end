@@ -11,7 +11,7 @@ import {
     deletePropertyRepositories,
 } from "../repositories/property.repositories";
 import { PropertyQuery, CreatePropertyInput } from "../type/property.type";
-import { createCustomError } from "@/utils/customError";
+import { createCustomError } from "../utils/customError";
 
 export async function findAllPropertiesServices(query : PropertyQuery) {
     const result = await findAllPropertiesRepositories(query);

@@ -6,9 +6,7 @@ import {
     createPeakSeasonService,
     deletePeakSeasonByDateService,
 
-} from "@/services/peakSeasonRate.services";
-
-
+} from "../services/peakSeasonRate.services";
 
 
 export async function updatePeakSeasonRateController(req: Request, res: Response, next : NextFunction) {
