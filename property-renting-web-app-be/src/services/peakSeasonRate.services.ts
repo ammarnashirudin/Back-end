@@ -8,7 +8,7 @@ import {
  } from "@/repositories/peakSeasonRate.Repositories";
 import { CreatePeakSeasonInput, CreatPeakInput } from "@/type/peakSeasonRate";
 import { createCustomError } from "@/utils/customError";
-import getDatesBetween from "@/middlewares/get.date.between";
+import getDatesBetween from "@/utils/get.date.between";
 
 
 
