@@ -4,17 +4,14 @@ import {
     createRoomAvailibiltyInputService,
     updateRoomAvailabilityService,
     deleteRoomAvailabilityService,
- } from "@/services/availability.services";
+ } from "../services/availability.services";
 
  export async function findAvailabiltyController(req:Request, res:Response, next : NextFunction){
     try {
         const roomId = Number(req.params.roomId);
         const tenantId = Number(req.params.tenantId);
 
-        const data = await findAvailabilityService({
-            roomId, 
-            tenantId,
-        })
+        const data = await findAvailabilityService(roomId, tenantId)
         res.status(201).json(data);
     } catch (err) {
         next(err);
@@ -47,8 +44,9 @@ import {
  export async function deleteAvailabilityController(req : Request, res : Response, next : NextFunction) {
     try {
         const tenantId = Number(req.params.tenantId);
-        const id = Number(req.params.id);
-        await deleteRoomAvailabilityService(id,tenantId);
+        const availabilityId = Number(req.params.availabilityId);
+        await deleteRoomAvailabilityService(availabilityId,tenantId);
+        res.status(201).json({message:"AvailabilityDelete"});
     } catch (err) {
         next(err);
     };

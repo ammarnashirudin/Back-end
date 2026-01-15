@@ -4,7 +4,7 @@ import {
     createRoomService, 
     updateRoomService, 
     deleteRoomServices,
-} from "@/services/rooms.services";
+} from "../services/rooms.services";
 
 
 export async function findRoomByPropertyController(

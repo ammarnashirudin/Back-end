@@ -10,7 +10,7 @@ import {
     createPropertyControllers,
     deletePropertyControllers,
     updatePropertyControllers,
-} from "@/controllers/property.controllers";
+} from "../controllers/property.controllers";
 
 const PropertyRouter = Router();
 

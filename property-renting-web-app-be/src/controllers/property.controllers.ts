@@ -11,7 +11,7 @@ import {
     updatePropertyServices,
     deletePropertyServices,
  } from "../services/property.service";
- import { createCustomError } from "@/utils/customError";
+ import { createCustomError } from "../utils/customError";
 
 
 export async function findAllPropertiesControllers(req :  Request, res : Response, next : NextFunction) {
@@ -101,8 +101,7 @@ export async function createPropertyControllers (req : Request, res : Response, 
         const property = await createPropertyServices(
             tenantId,
             req.body,
-            req.file
-        
+            req.file,
         );
     res.status(201).json(property);
     } catch (err) {

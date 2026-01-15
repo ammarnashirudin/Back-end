@@ -4,18 +4,18 @@ import {
     deleteAvailibiltyRepositories,
     updateAvailabiltyRepositories
 
- } from "@/repositories/availability.repositories";
-import prisma from "@/lib/prisma";
-import { createCustomError } from "@/utils/customError";
-import { findAvailabilityInput, CreateAvailabiltyInput, updateAvailabilityInput } from "@/type/rooms.type";
+ } from "../repositories/availability.repositories";
+import prisma from "../lib/prisma";
+import { createCustomError } from "../utils/customError";
+import { CreateAvailabiltyInput, updateAvailabilityInput } from "../type/rooms.type";
 
-export async function findAvailabilityService(data: findAvailabilityInput){
+export async function findAvailabilityService(roomId : number, tenantId : number){
     try {
         const room = await prisma.room.findFirst({
-            where: {id : data.roomId, property : data.tenantId},
+            where: {id : roomId, property : {tenantId}},
         });
-        if(!room) throw createCustomError(401, "Unauthorized")
-            return findAvailabilityRepositories(room);
+        if(!room) throw createCustomError(401, "Unauthorized");
+        return findAvailabilityRepositories(roomId);
     } catch (err) {
         throw err
     };
@@ -43,7 +43,7 @@ export async function createRoomAvailibiltyInputService(
 
 export async function updateRoomAvailabilityService(data: updateAvailabilityInput){
     try {
-        const availability = await prisma.roomAvailibility.findFirst({
+        const availability = await prisma.roomAvailability.findFirst({
             where : {
                 id : data.availabilityId,
                 room : {
@@ -67,7 +67,7 @@ export async function deleteRoomAvailabilityService(
     tenantId : number,
 ){
     try {
-        const availability = await prisma.roomAvailibility.findFirst({
+        const availability = await prisma.roomAvailability.findFirst({
             where : {
                 id : availabilityId,
                 room : {property : {tenantId}},

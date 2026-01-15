@@ -1,29 +1,32 @@
-import prisma from "@/lib/prisma";
+import prisma from "../lib/prisma";
 import { 
     updatePeakSeasonRepositories,
     deletePeakSeasonRepositories,
-    findPeakSeasonByRoomRepositories,
     upsertPeakSeasonRepositories,
     getPeakSeasonByRoomRepoistories,
     deletePeakSeasonByDateRepositories,
- } from "@/repositories/peakSeasonRate.Repositories";
-import { CreatePeakSeasonInput, CreatPeakInput } from "@/type/peakSeasonRate";
-import { createCustomError } from "@/utils/customError";
-import getDatesBetween from "@/middlewares/get.date.between";
+ } from "../repositories/peakSeasonRate.Repositories";
+import { CreatePeakSeasonInput, CreatPeakInput } from "../type/peakSeasonRate";
+import { createCustomError } from "../utils/customError";
+import getDatesBetween from "../utils/get.date.between";
 
 
-export async function findPeakRatesService(roomId : number, tenantId: number) {
+
+export async function getPeakSeasonByRoomService(
+    roomId : number,
+    tenantId : number,
+) {
     try {
         const room = await prisma.room.findFirst({
-            where : {id : roomId, property:{tenantId}},
+            where : {id: roomId, property:{tenantId}},
         });
         if(!room) throw createCustomError(401, "Unauthorized");
-        return findPeakSeasonByRoomRepositories(roomId);
+
+        return getPeakSeasonByRoomRepoistories(roomId);
     } catch (err) {
         throw err;
     };
 };
-
 
 export async function updatePeakRateSeasonService(
     id: number,
@@ -103,21 +106,7 @@ export async function createPeakSeasonService(
     };
 };
 
-export async function getPeakSeasonByRoomService(
-    roomId : number,
-    tenantId : number,
-) {
-    try {
-        const room = await prisma.room.findFirst({
-            where : {id: roomId, property:{tenantId}},
-        });
-        if(!room) throw createCustomError(401, "Unauthorized");
 
-        return getPeakSeasonByRoomRepoistories(roomId);
-    } catch (err) {
-        throw err;
-    };
-};
 
 export async function deletePeakSeasonByDateService(
     tenantId : number,

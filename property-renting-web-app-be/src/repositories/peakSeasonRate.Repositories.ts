@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { CreatPeakInput } from "@/type/peakSeasonRate";
+import prisma from "../lib/prisma";
+import { CreatPeakInput } from "../type/peakSeasonRate";
 
 
 export async function updatePeakSeasonRepositories(id : number, data : Partial<CreatPeakInput>) {
@@ -21,16 +21,6 @@ export async function deletePeakSeasonRepositories(id:number) {
     };
 };
 
-export async function findPeakSeasonByRoomRepositories(roomId : number) {
-    try {
-        return await prisma.peakSeasonRate.findMany({
-            where : {roomId},
-            orderBy : {startDate : "asc"},
-        });
-    } catch (err) {
-        throw err;
-    };
-};
 
 export async function upsertPeakSeasonRepositories(
     roomId : number,

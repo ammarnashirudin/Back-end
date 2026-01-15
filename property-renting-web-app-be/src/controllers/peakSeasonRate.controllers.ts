@@ -1,27 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { 
-    findPeakRatesService, 
     updatePeakRateSeasonService,
     deletePeakRateSeasonService,
     getPeakSeasonByRoomService,
     createPeakSeasonService,
     deletePeakSeasonByDateService,
 
-} from "@/services/peakSeasonRate.services";
-
-
-
-export async function findPeakSeasonRateController(req :Request, res:Response, next: NextFunction) {
-    try {
-        const roomId = Number(req.params.roomId);
-        const tenantId = Number(req.params.tenantId);
-
-        const data = await findPeakRatesService(roomId, tenantId);
-        res.json(data);
-    } catch (err) {
-        next(err);
-    };
-};
+} from "../services/peakSeasonRate.services";
 
 
 export async function updatePeakSeasonRateController(req: Request, res: Response, next : NextFunction) {
@@ -41,21 +26,22 @@ export async function deletePeakSeasonRateController(req: Request, res: Response
         const id = Number(req.params.id);
 
         await deletePeakRateSeasonService(id, tenantId,);
-        res.status(201).send()
+        res.status(201).json({message : "peak season deleted"});
     } catch (err) {
         next(err);
     };
 };
 
-export async function createPeakRateSeasonController(req: Request, res: Response, next : NextFunction) {
+export async function createPeakSeasonController(req: Request, res:Response, next : NextFunction) {
     try {
         const tenantId = Number(req.params.tenantId);
-        const data = await createPeakRateSeasonService(tenantId, req.body);
+        const data = await createPeakSeasonService(tenantId, req.body);
         res.status(201).json(data);
     } catch (err) {
         next(err);
     };
 };
+
 
 export async function getPeakSeasonController(req: Request, res: Response, next : NextFunction) {
     try {
@@ -73,19 +59,11 @@ export async function deletePeakSeasonByDateController(req: Request, res: Respon
         const tenantId = Number(req.params.tenantId);
         const {roomId, date} = req.body
         await deletePeakSeasonByDateService(tenantId, roomId, date);
-        res.status(201).send()
+        res.status(201).json({message : "peak season by date deleted"});
     } catch (err) {
         next(err);
     };
 };
 
-export async function createPeakSeasonController(req: Request, res:Response, next : NextFunction) {
-    try {
-        const tenantId = Number(req.params.tenantId);
-        const data = await createPeakSeasonService(tenantId, req.body);
-        res.status(201).json(data);
-    } catch (err) {
-        next(err);
-    };
-};
+
 

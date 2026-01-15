@@ -4,7 +4,7 @@ import {
     updateRoomController,
     createRoomController,
     deleteRoomController,
- } from "@/controllers/room.controller";
+ } from "../controllers/room.controller";
 
  const roomsRouter = Router();
 
