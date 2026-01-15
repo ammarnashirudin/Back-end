@@ -3,10 +3,10 @@ import {
     createRoomsRepositories,
     updateRoomRepositories,
     deleteRoomRepositories,
- } from "@/repositories/rooms.repositories";
-import prisma from "@/lib/prisma";
-import { createCustomError } from "@/utils/customError";
-import { CreateRoomInput, updateRoomInput } from "@/type/property.type";
+ } from "../repositories/rooms.repositories";
+import prisma from "../lib/prisma";
+import { createCustomError } from "../utils/customError";
+import { CreateRoomInput, updateRoomInput } from "../type/property.type";
 
 
 export async function findRoomsByPropertyService(

@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { CreateRoomInput, updateRoomInput } from "@/type/property.type";
+import prisma from "../lib/prisma";
+import { CreateRoomInput, updateRoomInput } from "../type/property.type";
 
 export async function findRoomsByPropertyRepositories(propertyId : number){
     try {

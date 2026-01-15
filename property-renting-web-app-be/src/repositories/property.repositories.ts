@@ -1,7 +1,7 @@
-import prisma from "@/lib/prisma";
+import prisma from "../lib/prisma";
 import { PropertyQuery, CreatePropertyInput } from "../type/property.type";
-import { cloudinaryUpload, cloudinaryRemove } from "@/utils/cloudinary";
-import { createCustomError } from "@/utils/customError";
+import { cloudinaryUpload, cloudinaryRemove } from "../utils/cloudinary";
+import { createCustomError } from "../utils/customError";
 
 
 export async function findAllPropertiesRepositories (query : PropertyQuery) {

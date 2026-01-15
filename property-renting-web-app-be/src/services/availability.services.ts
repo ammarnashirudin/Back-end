@@ -4,10 +4,10 @@ import {
     deleteAvailibiltyRepositories,
     updateAvailabiltyRepositories
 
- } from "@/repositories/availability.repositories";
-import prisma from "@/lib/prisma";
-import { createCustomError } from "@/utils/customError";
-import { CreateAvailabiltyInput, updateAvailabilityInput } from "@/type/rooms.type";
+ } from "../repositories/availability.repositories";
+import prisma from "../lib/prisma";
+import { createCustomError } from "../utils/customError";
+import { CreateAvailabiltyInput, updateAvailabilityInput } from "../type/rooms.type";
 
 export async function findAvailabilityService(roomId : number, tenantId : number){
     try {
