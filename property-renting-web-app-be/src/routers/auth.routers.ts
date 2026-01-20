@@ -2,13 +2,17 @@ import { Router } from "express";
 import { 
     registerTenantController,
     registerUserController,
-    verifyEmailController,
+    verifyEmailAndSetPasswordController,
+    socialRegisterTenantController,
+    socialRegisterUserController,
  } from "../controllers/auth.controllers";
 
- const authRouter = Router();
+const authRouter = Router();
 
- authRouter.post("/register", registerUserController);
- authRouter.post("/tenant/register", registerTenantController);
- authRouter.post("/verify-email", verifyEmailController);
+authRouter.post("/register-user", registerUserController);
+authRouter.post("/register-tenant", registerTenantController);
+authRouter.post("/verify-email", verifyEmailAndSetPasswordController);
+authRouter.post("/social-register-user", socialRegisterUserController);
+authRouter.post("/social-register-tenant", socialRegisterTenantController);
 
  export default authRouter;

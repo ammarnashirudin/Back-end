@@ -1,8 +1,6 @@
-import { tr } from "zod/v4/locales";
 import prisma from "../lib/prisma";
-import { createUser, createTenant, createEmailToken } from "../type/auth.type";
 
-export async function findUserByEmail(email: string) {
+export async function findUserByEmailRepositories(email: string) {
     try {
         return await prisma.user.findUnique({where:{email}});
     } catch (err) {
@@ -10,74 +8,62 @@ export async function findUserByEmail(email: string) {
     };
 };
 
-
-export async function createUser(data : createUser) {
+export async function createUserRepositories(data : {
+    name: string; 
+    email: string;
+    role : "USER" | "TENANT";
+}) {
     try {
-        return await prisma.user.create({data});
+        return await prisma.user.create({
+            data :{
+                ...data,
+                password : null,
+                isVerified : false,
+            }});
     } catch (err) {
         throw err;
     };
 };
 
+export async function createTenantRepositories(data : {
+    userId: number;
+    companyName: string;
+    phoneNumber: string;
+}) {
+    try {
+     return await prisma.tenant.create({data});   
+    } catch (err) {
+        throw err;
+    };
+};
 
-export async function verifyUser(
-    userId : number, 
-    password : string
+export async function createEmailTokenRepositories(
+    userId: number,
+    token: string,
+    expiresAt: Date
 ) {
     try {
-        return await prisma.user.update({
-            where : {id: userId},
-            data : {
-                password,
-                isVerified:true
-            },
+        return await prisma.emailToken.create({data:{
+            userId,
+            token,
+            expiresAt
+        }});    
+    } catch (err) {
+        throw err;
+    };
+};
+
+export async function verifyEmailAndSetPasswordRepositories(
+    token: string, 
+
+) {
+    try {
+        const emailToken = await prisma.emailToken.findUnique({
+            where: { token, used: false },
+            include: { user: true },
         });
+        return emailToken;
     } catch (err) {
         throw err;
-    };
+    };   
 };
-
-
-export async function createTenant(data : createTenant) {
-    try {
-        return await prisma.tenant.create({data});
-    } catch (err) {
-        throw err;
-    };
-};
-
-
-export async function createEmailToken(
-    userId : number,
-    token : string,
-    expiresAt : Date,
-) {
-    try {
-        return await prisma.emailToken.create({data:{userId, token, expiresAt}});
-    } catch (err) {
-        throw err;
-    };
-};
-
-
-export async function findEmailToken(token : string) {
-    try {
-        return await prisma.emailToken.findUnique({where: {token}});
-    } catch (err) {
-        throw err;
-    };
-};
-
-export async function markTokenUsed(id : number) {
-    try {
-        return await prisma.emailToken.update({
-            where :{id},
-            data: {used:true},
-        })
-    } catch (err) {
-        throw err;
-    };
-};
-
-
-

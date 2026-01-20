@@ -7,6 +7,7 @@ const CLOUDINARY_CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || "";
 const SECRET_KEY =process.env.SECRET_KEY || "";
 const GMAIL_EMAIL = process.env.GMAIL_EMAIL || "";
 const GMAIL_APP_PASS = process.env.GMAIL_APP_PASS;
+const APP_BASE_URL = process.env.APP_BASE_URL || "";
 
 export {
     PORT,
@@ -16,4 +17,5 @@ export {
     SECRET_KEY,
     GMAIL_APP_PASS,
     GMAIL_EMAIL,
+    APP_BASE_URL,
 };

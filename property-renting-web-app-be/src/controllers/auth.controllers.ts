@@ -1,30 +1,74 @@
 import { Request, Response, NextFunction } from "express";
-import { registerTenantService, registerUserService, verifyEmailService } from "../services/auth.service";
+import { 
+  registerUserService, 
+  registerTenantService,
+  verifyEmailAndSetPasswordService,
+  socialRegisterTenantService,
+  socialRegisterUserService,
+} from "../services/auth.service";
 
-
-export async function registerUserController(req: Request, res : Response, next: NextFunction) {
+export async function registerUserController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+){
   try {
-    const result = await registerUserService(req.body);
-    res.status(201).json(result);
+    const user = await registerUserService(req.body);
+    res.status(201).json({data:user ,message: "Verification email sent"});
   } catch (err) {
-    next (err);
-  }
+    next(err);
+  };
 };
 
-export async function registerTenantController(req: Request, res : Response, next: NextFunction) {
+export async function registerTenantController(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+){
   try {
-    const result = await registerTenantService(req.body);
-    res.status(201).json(result);
+    const user = await registerTenantService(req.body);
+    res.status(201).json({data:user ,message: "Verification email sent"});
   } catch (err) {
-    next (err);
-  }
-}
+    next(err);
+  };
+};
 
-export async function verifyEmailController(req: Request, res : Response, next: NextFunction) {
+export async function socialRegisterUserController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+){
   try {
-    const result = await verifyEmailService(req.body.token, req.body.password);
-    res.status(201).json(result);
+    const user = await socialRegisterUserService(req.body);
+    res.status(201).json({data:user ,message: "Verification email sent"});
   } catch (err) {
-    next (err);
-  }
-}
+    next(err);
+  };
+};
+
+export async function socialRegisterTenantController(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+){
+  try {
+    const user = await socialRegisterTenantService(req.body);
+    res.status(201).json({data:user ,message: "Verification email sent"});
+  } catch (err) {
+    next(err);
+  };
+};
+
+export async function verifyEmailAndSetPasswordController(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+){
+  try {
+    const { token, password } = req.body;
+    await verifyEmailAndSetPasswordService( token, password );
+    res.status(200).json({message: "account verified"});
+  } catch (err) {
+    next(err);
+  };
+};
