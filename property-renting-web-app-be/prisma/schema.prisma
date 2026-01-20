@@ -13,7 +13,7 @@ model User {
   role ROLE
   name String 
   email String @unique
-  password String
+  password String?
   isVerified Boolean @default(false)
   profileImage String?
   createdAt DateTime @default(now())
@@ -52,7 +52,7 @@ model EmailToken {
   used Boolean @default(false)
 
   user User @relation(fields: [userId], references: [id])
-  @@map("email tokens")
+  @@map("email_tokens")
 }
 
 model PasswordResetToken {
@@ -63,7 +63,7 @@ model PasswordResetToken {
   used Boolean @default(false)
 
   user User @relation(fields: [userId], references: [id])
-  @@map("password reset tokens")
+  @@map("password_reset_tokens")
 }
 
 model PropertyCategory {
@@ -72,13 +72,13 @@ model PropertyCategory {
   cretaedAt DateTime @default(now())
 
   properties Property[]
-  @@map("property categories")
+  @@map("property_categories")
 }
 
 model Property {
   id Int @id @default(autoincrement())
   tenantId Int
-  cetagoryId Int
+  catagoryId Int
   name String
   description String
   address String
@@ -87,7 +87,7 @@ model Property {
   updatedAt DateTime @updatedAt
 
   tenant Tenant @relation(fields: [tenantId], references: [id])
-  category PropertyCategory @relation(fields: [cetagoryId], references: [id])
+  category PropertyCategory @relation(fields: [catagoryId], references: [id])
   rooms Room[]
   reviews Review[]
   @@map("properties")
@@ -119,7 +119,7 @@ model RoomAvailability {
   isAvailable Boolean @default(true)
 
   room Room @relation(fields: [roomId], references: [id])
-  @@map("room availabilities")
+  @@map("room_availabilities")
 }
 
 model PeakSeasonRate {
@@ -134,7 +134,7 @@ model PeakSeasonRate {
 
   room Room @relation(fields: [roomId], references: [id])
   @@unique([roomId, startDate])
-  @@map("peak season rates")
+  @@map("peak_season_rates")
 }
 
 model Order {
@@ -150,7 +150,7 @@ model Order {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  paymentLogs PaymentLlog[]
+  paymentLogs PaymentLog[]
   reviews Review[]
 
   user User @relation(fields: [userId], references: [id])
@@ -164,7 +164,7 @@ enum ORDER_STATUS {
   Dibatalkan
 }
 
-model PaymentLlog {
+model PaymentLog {
   id Int @id @default(autoincrement())
   orderId Int
   status PAYMENT_STATUS
@@ -172,7 +172,7 @@ model PaymentLlog {
   createdAt DateTime @default(now())
 
   order Order @relation(fields: [orderId], references: [id])
-  @@map("payment logs")
+  @@map("payment_logs")
 }
 
 enum PAYMENT_STATUS {
@@ -185,7 +185,7 @@ model Review {
   id Int @id @default(autoincrement())
   userId Int
   propertyId Int
-  orederId Int
+  orderId Int
   rating Int
   comment String?
   reply String?
@@ -194,7 +194,7 @@ model Review {
 
   user User @relation(fields: [userId], references: [id])
   property Property @relation(fields: [propertyId], references: [id])
-  order Order @relation(fields: [orederId], references: [id])
+  order Order @relation(fields: [orderId], references: [id])
   @@map("reviews")
 }
 

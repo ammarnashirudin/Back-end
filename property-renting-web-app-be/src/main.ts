@@ -5,7 +5,8 @@ import PropertyRouter from "./routers/property.routers.js";
 import roomsRouter from "./routers/room.routers.js";
 import availabilityRouter from "./routers/availability.controller.js";
 import peakSeasonRateRouter from "./routers/peakSeasonRate.routers.js";
-
+import authRouter from "./routers/auth.routers.js";
+import loginRouter from "./routers/login.routers.js";
 import { PORT } from "./configs/env.configs.js";
 
 
@@ -22,6 +23,8 @@ app.use("/properties", PropertyRouter);
 app.use("/rooms", roomsRouter);
 app.use("/availabilityRoom", availabilityRouter);
 app.use("/peakSeasonRate", peakSeasonRateRouter);
+app.use("/auth", authRouter);
+app.use("/login", loginRouter);
 
 // Start the server
 
