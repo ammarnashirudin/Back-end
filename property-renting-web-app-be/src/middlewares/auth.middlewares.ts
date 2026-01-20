@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { createCustomError } from "../utils/customError";
 import {verify} from "jsonwebtoken";
 import { SECRET_KEY } from "../configs/env.configs";
+import prisma from "../lib/prisma";
 
 export interface Token{
     email : string;
@@ -52,4 +53,22 @@ export function roleGuard(allowedRoles: string[]) {
       next(err);
     }
   };
+}
+
+export async function verifiedMiddleware(
+  req: Request, 
+  res: Response, 
+  next: NextFunction  ) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: req.user?.email,
+      },
+    });
+    if(!user || !user.isVerified){
+      throw createCustomError(401, "User is not verified");
+    }
+  } catch (err) {
+    next(err);
+  }
 }
