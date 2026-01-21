@@ -11,6 +11,7 @@ import {
     roleGuard,
 } from "../middlewares/auth.middlewares";
 
+
  const availabilityRouter = Router();
 
  availabilityRouter.get("/room/:roomId", authMiddleware, verifiedMiddleware, roleGuard(["TENANT"]),findAvailabiltyController);

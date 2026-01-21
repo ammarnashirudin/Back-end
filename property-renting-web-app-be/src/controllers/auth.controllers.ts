@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { 
   registerUserService, 
   registerTenantService,
-  verifyEmailAndSetPasswordService,
   socialRegisterTenantService,
   socialRegisterUserService,
 } from "../services/auth.service";
@@ -60,16 +59,3 @@ export async function socialRegisterTenantController(
   };
 };
 
-export async function verifyEmailAndSetPasswordController(
-  req: Request,
-  res: Response,
-  next: NextFunction,
-){
-  try {
-    const { token, password } = req.body;
-    await verifyEmailAndSetPasswordService( token, password );
-    res.status(200).json({message: "account verified"});
-  } catch (err) {
-    next(err);
-  };
-};
