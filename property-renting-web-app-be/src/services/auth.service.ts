@@ -1,18 +1,13 @@
 import { 
     findUserByEmailRepositories,
-    createEmailTokenRepositories,
     createTenantRepositories,
     createUserRepositories,
-    verifyEmailAndSetPasswordRepositories,
 } from "../repositories/auth.repositories";
 import { 
     RegisterTenantInput,
     RegisterUserInput,
  } from "../type/auth.type";
  import { createCustomError } from "../utils/customError";
-import crypto from "crypto";
-import prisma from "../lib/prisma";
-import bcrypt from "bcrypt";
 import { generateAndSendEmailVerificationToken } from "../utils/verification";
 
 
@@ -90,36 +85,6 @@ export async function socialRegisterTenantService(data : RegisterTenantInput) {
         });
         await generateAndSendEmailVerificationToken(user.id, user.email);
         return user;
-    } catch (err) {
-        throw err;
-    };
-};
-
-
-export async function verifyEmailAndSetPasswordService(
-    token : string, 
-    password : string,
-) {
-    try {
-       const emailToken = await verifyEmailAndSetPasswordRepositories(token);
-         if (!emailToken) throw createCustomError(401, "Invalid token");
-         if (emailToken.expiresAt < new Date()) {
-            throw createCustomError(401, "Token has expired");
-         };
-         const hashed = await bcrypt.hash(password, 10);
-         await prisma.$transaction([
-            prisma.user.update({
-                where: {id: emailToken.userId},
-                data: {
-                    isVerified: true,
-                    password: hashed,
-                },
-            }),
-            prisma.emailToken.update({
-                where: {id: emailToken.id},
-                data: {used: true},
-            }),
-         ]);
     } catch (err) {
         throw err;
     };

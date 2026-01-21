@@ -5,12 +5,18 @@ import {
     updateAvailabilityController,
     deleteAvailabilityController,
  } from "../controllers/availability.controllers";
+import { 
+    authMiddleware,
+    verifiedMiddleware,
+    roleGuard,
+} from "../middlewares/auth.middlewares";
+
 
  const availabilityRouter = Router();
 
- availabilityRouter.get("/room/:roomId", findAvailabiltyController);
- availabilityRouter.post("/", createAvaillabilityController);
- availabilityRouter.put("/:id", updateAvailabilityController);
- availabilityRouter.delete("/:id", deleteAvailabilityController);
+ availabilityRouter.get("/room/:roomId", authMiddleware, verifiedMiddleware, roleGuard(["TENANT"]),findAvailabiltyController);
+ availabilityRouter.post("/",authMiddleware, verifiedMiddleware, roleGuard(["TENANT"]), createAvaillabilityController);
+ availabilityRouter.put("/:id",authMiddleware, verifiedMiddleware, roleGuard(["TENANT"]) ,updateAvailabilityController);
+ availabilityRouter.delete("/:id",authMiddleware, verifiedMiddleware, roleGuard(["TENANT"]), deleteAvailabilityController);
 
  export default availabilityRouter;

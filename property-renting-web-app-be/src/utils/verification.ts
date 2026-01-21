@@ -4,10 +4,19 @@ import { sendVerificationEmail } from '../helpers/nodemailer';
 
 export async function generateAndSendEmailVerificationToken(
     userId : number,
-    email: string
+    email: string,
 ) {
     const token = crypto.randomUUID();
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-    await createEmailTokenRepositories(userId, token, expiresAt);
-    await sendVerificationEmail({ to: email, token });
+    const expiresAt = new Date(
+        Date.now() + 60 * 60 * 1000
+    );
+    await createEmailTokenRepositories(
+        userId, 
+        token, 
+        expiresAt,
+    );
+    await sendVerificationEmail({ 
+        to: email, 
+        token,
+    });
 };
