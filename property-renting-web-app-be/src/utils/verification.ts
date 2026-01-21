@@ -4,7 +4,7 @@ import { sendVerificationEmail } from '../helpers/nodemailer';
 
 export async function generateAndSendEmailVerificationToken(
     userId : number,
-    email: string
+    email: string,
 ) {
     const token = crypto.randomUUID();
     const expiresAt = new Date(

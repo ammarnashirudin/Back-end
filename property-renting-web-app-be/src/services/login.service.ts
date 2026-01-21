@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import { compareSync } from "bcrypt";
 import  Jwt  from "jsonwebtoken";
 import { findUserByEmailRepositories } from "../repositories/auth.repositories";
 import { findLoginByEmailRepositories } from "../repositories/login.repositories";
@@ -18,7 +18,7 @@ export async function loginWithEmailService(
         if (!user.isVerified) throw createCustomError(401, "Please verify your email first");
         if (user.role !== role) throw createCustomError(401, "Invalid role");
 
-        const match = await bcrypt.compare(password, user.password);
+        const match = await compareSync(password, user.password);
         if (!match) throw createCustomError(401, "Invalid password");
 
         const token = Jwt.sign(
@@ -27,7 +27,7 @@ export async function loginWithEmailService(
                 role: user.role,
             },
             SECRET_KEY,
-            { expiresIn: "3d" }
+            { expiresIn: "1d" }
         );
         return {
             token,

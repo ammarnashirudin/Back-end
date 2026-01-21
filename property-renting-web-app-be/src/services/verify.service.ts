@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import { genSaltSync, hashSync } from "bcrypt";
 import { verifyEmailAndSetPasswordRepositories } from "../repositories/auth.repositories";
 import { createCustomError } from "../utils/customError";
 import prisma from "../lib/prisma";
@@ -14,8 +14,9 @@ export async function verifyEmailAndSetPasswordService(
          if (emailToken.expiresAt < new Date()) 
             throw createCustomError(401, "Token has expired");
         if(password.length < 8) throw createCustomError(400, "Password must be at least 8 characters long");
-
-         const hashed = await bcrypt.hash(password, 10);
+        
+         const salt = genSaltSync(10);   
+         const hashed = hashSync(password, salt);
          
          await prisma.$transaction([
             prisma.user.update({

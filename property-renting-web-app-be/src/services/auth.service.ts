@@ -1,9 +1,7 @@
 import { 
     findUserByEmailRepositories,
-    createEmailTokenRepositories,
     createTenantRepositories,
     createUserRepositories,
-    verifyEmailAndSetPasswordRepositories,
 } from "../repositories/auth.repositories";
 import { 
     RegisterTenantInput,
@@ -91,6 +89,3 @@ export async function socialRegisterTenantService(data : RegisterTenantInput) {
         throw err;
     };
 };
-
-
-
