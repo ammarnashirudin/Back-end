@@ -9,6 +9,8 @@ import peakSeasonRateRouter from "./routers/peakSeasonRate.routers.js";
 import authRouter from "./routers/auth.routers.js";
 import loginRouter from "./routers/login.routers.js";
 import verifyRouter from "./routers/verify.routers.js";
+import pofileRouter from "./routers/profile.routers.js";
+import tenantRouter from "./routers/tenant.routers.js";
 
 import { PORT } from "./configs/env.configs.js";
 
@@ -22,13 +24,17 @@ app.use(express.json());
 
 // Routes
 
+app.use("/auth", authRouter);
+app.use("/profile", pofileRouter);
+app.use("/verify", verifyRouter);
+app.use("/tenant",tenantRouter);
+
 app.use("/properties", PropertyRouter);
 app.use("/rooms", roomsRouter);
 app.use("/availabilityRoom", availabilityRouter);
 app.use("/peakSeasonRate", peakSeasonRateRouter);
-app.use("/auth", authRouter);
 app.use("/login", loginRouter);
-app.use("/verify", verifyRouter);
+
 
 //error Middlewares
 app.use(errorMiddleware);
